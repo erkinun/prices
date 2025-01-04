@@ -28,7 +28,7 @@ export default async function Home() {
     "https://api.coindesk.com/v1/bpi/currentprice.json"
   );
 
-  console.log({ btcPrices });
+  function calculateSellPosition() {}
 
   return (
     <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -39,8 +39,21 @@ export default async function Home() {
           <div>{btcPrices.bpi.USD.code}</div>
         </div>
         <div>As of: {btcPrices.time.updateduk}</div>
+        <div className="flex flex-col gap-2 border border-white rounded p-2">
+          <label htmlFor="sell">Where did you sell</label>
+          <input name="sell" type="number" className="text-black" />
+          <label htmlFor="sellAmount">How much</label>
+          <input name="sellAmount" type="number" className="text-black" />
+          <Button>Calculate Position</Button>
+        </div>
+        <div className="flex flex-col border border-white rounded p-2">
+          <label htmlFor="buy">Where did you buy</label>
+          <input name="buy" type="number" className="text-black" />
+          <label htmlFor="buyAmount">How much</label>
+          <input name="buyAmount" type="number" className="text-black" />
+        </div>
       </main>
-      <Button />
+      <Button>Some button</Button>
     </div>
   );
 }
