@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button";
+import { Form } from "@/components/Form";
 import { fetchTyped } from "@/utils/typedFetcher";
 
 type Price = {
@@ -23,37 +23,28 @@ type BTCPrice = {
   disclaimer: string;
 };
 
+type MinimalApi = {
+  USD: number;
+};
+
 export default async function Home() {
-  const btcPrices = await fetchTyped<BTCPrice>(
-    "https://api.coindesk.com/v1/bpi/currentprice.json"
+  const btcPrices = await fetchTyped<MinimalApi>(
+    "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD"
   );
 
-  function calculateSellPosition() {}
-
   return (
-    <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] dark:text-neutral-100">
       <main>
-        <h1>BitCoin Price</h1>
+        <h1>
+          BitCoin Price <div>As of {new Date().toLocaleDateString()}</div>
+        </h1>
         <div className="flex gap-2">
-          <h2>{btcPrices.bpi.USD.rate}</h2>
-          <div>{btcPrices.bpi.USD.code}</div>
+          <h2>USD</h2>
+          <div>{btcPrices.USD}</div>
         </div>
-        <div>As of: {btcPrices.time.updateduk}</div>
-        <div className="flex flex-col gap-2 border border-white rounded p-2">
-          <label htmlFor="sell">Where did you sell</label>
-          <input name="sell" type="number" className="text-black" />
-          <label htmlFor="sellAmount">How much</label>
-          <input name="sellAmount" type="number" className="text-black" />
-          <Button>Calculate Position</Button>
-        </div>
-        <div className="flex flex-col border border-white rounded p-2">
-          <label htmlFor="buy">Where did you buy</label>
-          <input name="buy" type="number" className="text-black" />
-          <label htmlFor="buyAmount">How much</label>
-          <input name="buyAmount" type="number" className="text-black" />
-        </div>
+
+        <Form bitcoinPrice={btcPrices.USD} />
       </main>
-      <Button>Some button</Button>
     </div>
   );
 }
