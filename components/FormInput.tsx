@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // TODO this feels wrong : )
 export function FormInput({
   field,

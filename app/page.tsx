@@ -1,28 +1,6 @@
 import { Form } from "@/components/Form";
 import { fetchTyped } from "@/utils/typedFetcher";
 
-type Price = {
-  code: string;
-  symbol: string;
-  rate: string;
-  description: string;
-  rate_float: number;
-};
-
-type BTCPrice = {
-  time: {
-    updated: string;
-    updatedISO: string;
-    updateduk: string;
-  };
-  bpi: {
-    EUR: Price;
-    USD: Price;
-    GBP: Price;
-  };
-  disclaimer: string;
-};
-
 type MinimalApi = {
   USD: number;
 };

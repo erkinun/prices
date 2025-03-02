@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 "use client";
 
 import { useForm } from "@tanstack/react-form";
@@ -17,6 +18,16 @@ type FormProps = {
   bitcoinPrice: number;
 };
 
+function localStorageGetOr(key: string, defaultValue: number = 0): number {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(key)
+      ? Number.parseInt(localStorage.getItem(key) ?? "0")
+      : defaultValue;
+  } else {
+    return defaultValue;
+  }
+}
+
 export function Form({ bitcoinPrice }: FormProps) {
   function clearLocalStorage() {
     localStorage.removeItem("sellPoint");
@@ -29,23 +40,17 @@ export function Form({ bitcoinPrice }: FormProps) {
 
   const form = useForm<FormType>({
     defaultValues: {
-      sellPoint: localStorage.getItem("sellPoint")
-        ? Number.parseInt(localStorage.getItem("sellPoint") ?? "0")
-        : 0,
-      buyPoint: localStorage.getItem("buyPoint")
-        ? Number.parseInt(localStorage.getItem("buyPoint") ?? "0")
-        : 0,
-      sellAmount: localStorage.getItem("sellAmount")
-        ? Number.parseInt(localStorage.getItem("sellAmount") ?? "0")
-        : 0,
-      buyAmount: localStorage.getItem("buyAmount")
-        ? Number.parseInt(localStorage.getItem("buyAmount") ?? "0")
-        : 0,
+      sellPoint: localStorageGetOr("sellPoint"),
+      buyPoint: localStorageGetOr("buyPoint"),
+      sellAmount: localStorageGetOr("sellAmount"),
+      buyAmount: localStorageGetOr("buyAmount"),
       sellPosition: 0,
       buyPosition: 0,
     },
     onSubmit: async ({ value }) => {
-      bitcoinPrice && calculatePositions(value);
+      if (bitcoinPrice) {
+        calculatePositions(value);
+      }
     },
   });
 
