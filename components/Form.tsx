@@ -2,14 +2,15 @@
 
 import { useForm } from "@tanstack/react-form";
 import { Button } from "./Button";
+import { FormInput } from "./FormInput";
 
 type FormType = {
   sellPoint: number;
   buyPoint: number;
   sellAmount: number;
   buyAmount: number;
-  sellPosition?: number;
-  buyPosition?: number;
+  sellPosition: number;
+  buyPosition: number;
 };
 
 type FormProps = {
@@ -40,22 +41,21 @@ export function Form({ bitcoinPrice }: FormProps) {
       buyAmount: localStorage.getItem("buyAmount")
         ? Number.parseInt(localStorage.getItem("buyAmount") ?? "0")
         : 0,
-      sellPosition: undefined,
-      buyPosition: undefined,
+      sellPosition: 0,
+      buyPosition: 0,
     },
     onSubmit: async ({ value }) => {
       bitcoinPrice && calculatePositions(value);
     },
   });
 
-  // TODO save the buy and sell positions in the local storage
   function calculatePositions({
     sellPoint,
     buyPoint,
     sellAmount,
     buyAmount,
   }: FormType) {
-    if (sellPoint !== undefined && sellAmount !== undefined) {
+    if (sellPoint !== 0 && sellAmount !== 0) {
       localStorage.setItem("sellPoint", String(sellPoint));
       localStorage.setItem("sellAmount", String(sellAmount));
 
@@ -74,7 +74,7 @@ export function Form({ bitcoinPrice }: FormProps) {
 
       // TODO do the buy position calculation
     }
-    if (buyPoint !== undefined && buyAmount !== undefined) {
+    if (buyPoint !== 0 && buyAmount !== 0) {
       localStorage.setItem("buyPoint", String(buyPoint));
       localStorage.setItem("buyAmount", String(buyAmount));
       console.log({ buyPoint, buyAmount });
@@ -101,99 +101,51 @@ export function Form({ bitcoinPrice }: FormProps) {
           e.stopPropagation();
           form.handleSubmit();
         }}
-        className="flex flex-col gap-2 "
+        className="flex flex-col md:flex-row gap-2"
       >
-        {
-          // TODO make this a component, later
-        }
-        <form.Field
-          name="sellPoint"
-          children={(field) => (
-            <div className="flex flex-col">
-              <label htmlFor={field.name}>Where did you sell</label>
-              <input
-                className="text-black dark:bg-neutral-800 dark:text-neutral-100"
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(Number(e.target.value))}
-              />
-            </div>
-          )}
-        />
-        <form.Field
-          name="sellAmount"
-          children={(field) => (
-            <div className="flex flex-col">
-              <label htmlFor={field.name}>How much</label>
-              <input
-                className="text-black"
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(Number(e.target.value))}
-              />
-            </div>
-          )}
-        />
-        <form.Field
-          name="buyPoint"
-          children={(field) => (
-            <div className="flex flex-col">
-              <label htmlFor={field.name}>Where did you buy</label>
-              <input
-                className="text-black"
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(Number(e.target.value))}
-              />
-            </div>
-          )}
-        />
-        <form.Field
-          name="buyAmount"
-          children={(field) => (
-            <div className="flex flex-col">
-              <label htmlFor={field.name}>How much</label>
-              <input
-                className="text-black"
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(Number(e.target.value))}
-              />
-            </div>
-          )}
-        />
-        <form.Field
-          name="sellPosition"
-          children={(field) => (
-            <div className="flex flex-col">
-              <label htmlFor={field.name}>Sell Position</label>
-              <input
-                className="text-black"
-                name={field.name}
-                value={field.state.value}
-                readOnly
-              />
-            </div>
-          )}
-        />
-        <form.Field
-          name="buyPosition"
-          children={(field) => (
-            <div className="flex flex-col">
-              <label htmlFor={field.name}>Buy Position</label>
-              <input
-                className="text-black"
-                name={field.name}
-                value={field.state.value}
-                readOnly
-              />
-            </div>
-          )}
-        />
+        <div>
+          <form.Field
+            name="sellPoint"
+            children={(field) => (
+              <FormInput field={field} labelText="Where did you sell" />
+            )}
+          />
+          <form.Field
+            name="sellAmount"
+            children={(field) => (
+              <FormInput field={field} labelText="How much" />
+            )}
+          />
+          <form.Field
+            name="sellPosition"
+            children={(field) => (
+              <FormInput field={field} labelText="Sell Position" />
+            )}
+          />
+        </div>
+
+        <div>
+          <form.Field
+            name="buyPoint"
+            children={(field) => (
+              <FormInput field={field} labelText="Where did you buy" />
+            )}
+          />
+          <form.Field
+            name="buyAmount"
+            children={(field) => (
+              <FormInput field={field} labelText="How much" />
+            )}
+          />
+
+          <form.Field
+            name="buyPosition"
+            children={(field) => (
+              <FormInput field={field} labelText="Buy Position" />
+            )}
+          />
+        </div>
+
         <Button>Calculate Positions</Button>
       </form>
       <Button onClick={clearLocalStorage}>Clear positions</Button>

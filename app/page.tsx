@@ -34,13 +34,13 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] dark:text-neutral-100">
-      <main>
+      <main className="flex flex-col gap-2 w-full">
         <h1>
           BitCoin Price <div>As of {new Date().toLocaleDateString()}</div>
         </h1>
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-center">
           <h2>USD</h2>
-          <div>{btcPrices.USD}</div>
+          <div className="text-xl font-bold">{btcPrices.USD}</div>
         </div>
 
         <Form bitcoinPrice={btcPrices.USD} />

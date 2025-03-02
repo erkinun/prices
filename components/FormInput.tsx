@@ -12,7 +12,7 @@ export function FormInput({
     <div className="flex flex-col">
       <label htmlFor={field.name}>{labelText}</label>
       <input
-        className="text-black dark:bg-neutral-800 dark:text-neutral-100"
+        className="text-black p-2 rounded-sm dark:bg-neutral-800 dark:text-neutral-100"
         name={field.name}
         value={field.state.value}
         onBlur={field.handleBlur}
