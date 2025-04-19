@@ -7,7 +7,8 @@ type MinimalApi = {
 
 export default async function Home() {
   const btcPrices = await fetchTyped<MinimalApi>(
-    "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD"
+    "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD",
+    { cache: "no-store" }
   );
 
   return (
